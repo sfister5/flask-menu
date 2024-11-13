@@ -10,6 +10,7 @@
 
 """Register menu."""
 
+import importlib
 from inspect import getfullargspec
 
 from flask import Blueprint
@@ -67,12 +68,14 @@ def register_menu(
     """Decorator of a view function that should be included in the menu."""
     if isinstance(app, Blueprint):
         endpoint = app.name + "." + f_name
+        ep = importlib.import_module(app.name, f_name)
         #before_first_request = app.before_app_first_request
     else:
         endpoint = f_name
+        ep = importlib.import_module(f_name)
         #before_first_request = app.before_first_request
 
-    expected = getfullargspec(endpoint).args
+    expected = getfullargspec(ep).args
 
     #@before_first_request
     #def _register_menu_item():
