@@ -19,6 +19,7 @@ from .proxies import current_menu
 
 def register_menu(
     app,
+    f_name,
     path,
     text,
     order=0,
@@ -65,13 +66,13 @@ def register_menu(
     #def menu_decorator(f):
     """Decorator of a view function that should be included in the menu."""
     if isinstance(app, Blueprint):
-        endpoint = app.name + "." + f.__name__
-        before_first_request = app.before_app_first_request
+        endpoint = app.name + "." + f_name
+        #before_first_request = app.before_app_first_request
     else:
-        endpoint = f.__name__
-        before_first_request = app.before_first_request
+        endpoint = f_name
+        #before_first_request = app.before_first_request
 
-    expected = getfullargspec(f).args
+    expected = getfullargspec(endpoint).args
 
     #@before_first_request
     #def _register_menu_item():
