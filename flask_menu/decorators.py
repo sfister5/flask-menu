@@ -62,34 +62,35 @@ def register_menu(
        The *kwargs* arguments.
     """
 
-    def menu_decorator(f):
-        """Decorator of a view function that should be included in the menu."""
-        if isinstance(app, Blueprint):
-            endpoint = app.name + "." + f.__name__
-            before_first_request = app.before_app_first_request
-        else:
-            endpoint = f.__name__
-            before_first_request = app.before_first_request
+    #def menu_decorator(f):
+    """Decorator of a view function that should be included in the menu."""
+    if isinstance(app, Blueprint):
+        endpoint = app.name + "." + f.__name__
+        before_first_request = app.before_app_first_request
+    else:
+        endpoint = f.__name__
+        before_first_request = app.before_first_request
 
-        expected = getfullargspec(f).args
+    expected = getfullargspec(f).args
 
-        @before_first_request
-        def _register_menu_item():
-            # str(path) allows path to be a string-convertible object
-            # that may be useful for delayed evaluation of path
-            item = current_menu.submenu(str(path))
-            item.register(
-                endpoint,
-                text,
-                order,
-                endpoint_arguments_constructor=endpoint_arguments_constructor,
-                dynamic_list_constructor=dynamic_list_constructor,
-                active_when=active_when,
-                visible_when=visible_when,
-                expected_args=expected,
-                **kwargs,
-            )
+    #@before_first_request
+    #def _register_menu_item():
+        # str(path) allows path to be a string-convertible object
+        # that may be useful for delayed evaluation of path
+    item = current_menu.submenu(str(path))
+    item.register(
+        endpoint,
+        text,
+        order,
+        endpoint_arguments_constructor=endpoint_arguments_constructor,
+        dynamic_list_constructor=dynamic_list_constructor,
+        active_when=active_when,
+        visible_when=visible_when,
+        expected_args=expected,
+        **kwargs,
+    )
 
-        return f
+    #return f
 
-    return menu_decorator
+    #return menu_decorator
+    return item
